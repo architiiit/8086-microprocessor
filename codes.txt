@@ -1,0 +1,648 @@
+
+------MULTIBYTE ADDITION----
+
+vals:
+DB 0x01 
+DB 0x02
+DB 0x03
+DB 0x04
+DB 0x05
+DB 0x06
+DB 0x07
+DB 0x08
+
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV DI,8
+MOV BX,4
+MOV CL,04
+MOV DL,00
+back:
+MOV AL,byte[BX]
+ADD AL,byte[SI]
+MOV byte[DI],AL
+INC BX
+INC SI
+INC DI
+LOOP back
+JNC skip
+ADC DL,00
+skip:
+MOV byte[DI],DL
+HLT
+-----MULTIBYTE SUBSTRACTION-----
+vals:
+DB 0x01 
+DB 0x02
+DB 0x03
+DB 0x04
+DB 0x05
+DB 0x06
+DB 0x07
+DB 0x08
+
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV DI,8
+MOV BX,4
+MOV CL,04
+MOV DL,00
+back:
+MOV AL,byte[BX]
+ADD AL,byte[SI]
+MOV byte[DI],AL
+INC BX
+INC SI
+INC DI
+LOOP back
+JNC skip
+ADC DL,00
+skip:
+MOV byte[DI],DL
+HLT
+
+-----8 BIT MULTIPLICATION------
+vals:
+DB 0x09 
+DB 0x08
+
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV AL,byte[SI]
+MOV BL,byte[SI,01]
+MUL BL
+MOV byte[SI,02],AL
+HLT
+--------16 BIT MULTIPLICATION-------
+vals:
+DB 0x45
+DB 0xDA
+DB 0xF2 
+DB 0x10
+
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV AX,WORD[SI]
+MOV BX,WORD[SI,02]
+MUL BX
+MOV WORD[SI,04],AX
+MOV WORD[SI,06],DX
+HLT
+------16/8 BIT DIVISION---
+vals:
+DB 0xF2
+DB 0x10
+DB 0x48
+
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV AX,WORD[SI]
+MOV BL,BYTE[SI,02]
+DIV BL
+MOV BYTE[SI,03],AX
+HLT
+-----32/16BIT DIVISION----
+vals:
+DB 0xD8
+DB 0x44
+DB 0x20
+DB 0x03
+DB 0xF2
+DB 0x10
+
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV AX,WORD[SI]
+MOV DX,WORD[SI,02]
+MOV BX,WORD[SI,04]
+DIV BX
+MOV WORD[SI,06],AX
+HLT
+--------Count the number of 1’s and 0’s in a register--------
+vals:
+DB 0x17
+
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV DL,BYTE[SI]
+MOV BL,00
+MOV CL,08
+MOV AL,DL
+BACK:
+ROR AX,01
+JNC SKIP
+INC BL
+SKIP:
+DEC CL
+JNZ BACK
+HLT
+---------SQUARE AND CUBE-------
+vals:
+DB 0x00
+DB 0x07
+
+
+
+; actual entry point of the program
+start:
+MOV BX,07
+MOV AX,BX
+MUL BX
+MOV CX,AX
+MOV AX,07
+MUL CX
+
+
+
+HLT
+------------BCD ADDITION--------
+vals:
+DW 0x7353
+DW 0x2929
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV BL,2
+MOV DI,4
+MOV CX,02
+back:
+MOV AL,BYTE[SI]
+ADC AL,BYTE[BX]
+DAA
+MOV BYTE[DI],AL
+INC BX
+INC SI
+INC DI
+DEC CX
+JNZ back
+HLT
+---------SERIES OF N BYTES ADDITION--------
+vals:
+DB 0x11
+DB 0x22
+DB 0x33
+DB 0x44
+DB 0x55
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV CL,05
+MOV AL,00
+MOV BL,00
+back:
+MOV DL,BYTE[SI]
+ADD AL,DL
+JNC label
+INC BL
+label:
+INC SI
+LOOP back
+MOV BYTE[SI],AL
+MOV BYTE[SI,01],BL
+HLT
+-------------------------------------
+8)	ASICII Arithmetic Operations
+a)	Addition
+vals:
+DB 0x32 
+DB 0x35
+DB 0x30
+
+
+; actual entry point of the program
+start:
+XOR AX,AX
+MOV SI,0
+MOV AL,byte[SI]
+MOV BL,byte[SI,01]
+MOV DL,BYTE[SI,02]
+SUB AL,0X30
+SUB BL,0X30
+ADD AL,BL
+OR AL,DL
+MOV byte[SI,02],AL
+HLT
+-------------------------------------
+b)	Subtraction
+vals:
+DB 0x35
+DB 0x32
+DB 0x30
+
+
+; actual entry point of the program
+start:
+XOR AX,AX
+MOV SI,0
+MOV AL,byte[SI]
+MOV BL,byte[SI,01]
+MOV DL,BYTE[SI,02]
+SUB AL,0X30
+SUB BL,0X30
+SUB AL,BL
+OR AL,DL
+MOV byte[SI,02],AL
+HLT
+-------------MULTIPLICATION-----------
+vals:
+DB 0x33
+DB 0x34
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV AL,BYTE[SI]
+SUB AL,0x30
+MOV BL,BYTE[SI,01]
+SUB BL,0x30
+MUL BL
+AAM
+OR AX,0x3030
+MOV WORD[SI,02],AX
+HLT
+-----------DIVISION----------
+vals:
+DB 0x34
+DB 0x32
+DB 0x35
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV AX,WORD[SI]
+SUB AX,0x3030
+MOV BL,BYTE[SI,02]
+SUB BL,0x30
+AAD
+DIV BL
+OR AX,0x3030
+MOV WORD[SI,02],AX
+HLT
+----------ASCII TO BCD------
+vals:
+DB 0x39
+DB 0x36
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV BX,WORD[SI]
+AND BX,0x0F0F
+MOV CL,04
+SHL BH,CL
+OR BL,BH
+MOV WORD[SI,02],BX
+
+HLT
+---------BCD TO ASCII---------
+vals:
+DB 0x96
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV AL,BYTE[SI]
+MOV AH,BYTE[SI]
+AND AL,0x0F
+AND AH,0xF0
+MOV CL,04
+SHR AH,CL
+OR AX,0x3030
+MOV WORD[SI,01] ,AX
+
+
+HLT
+---------HEXADECIMAL TO ASCII--------
+vals:
+DB 0x0B
+DB 0X00
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV AX,word[SI]
+CMP AX,0x000A
+JNC skip
+ADD AX,0x30
+JMP skip1
+skip:
+ADD AX,0x37
+skip1:
+HLT
+-------LARGEST ELEMENT IN AN ARRAY--------
+vals:
+DW 0x0005
+DW 0x8654
+DW 0x9452
+DW 0x7386
+DW 0x9535
+DW 0x8563
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV CX,WORD[SI]
+back:
+INC SI
+INC SI
+CMP AX,WORD[SI]
+JNC skip
+MOV AX,WORD[SI]
+skip:
+LOOP back
+ADD SI,0x02
+MOV WORD[SI],AX
+HLT
+--------------SMALLEST ELEMENT IN AN ARRAY--------
+vals:
+DW 0x0005
+DW 0x8654
+DW 0x9452
+DW 0x7386
+DW 0x9535
+DW 0x8563
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV CX,WORD[SI]
+MOV AX,WORD[SI,02]
+back:
+INC SI
+INC SI
+CMP AX,WORD[SI]
+JB skip
+MOV AX,WORD[SI]
+skip:
+LOOP back
+ADD SI,0x02
+MOV WORD[SI],AX
+HLT
+--------------------------------------------
+Data Transfer(Bytewise/Wordwise)
+vals:
+DB 0x06
+DB 0x94
+DB 0x86
+DB 0x35
+DB 0x78
+DB 0x89
+DB 0x01
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV DI,7
+MOV CL,BYTE[SI]
+INC SI
+back:
+MOVS byte
+LOOP back
+HLT
+-------------------------------------------------
+13)	Transfer a block of data using one location to another (Without String instruction) in:
+a)	Serial Order
+vals:
+DB 0x06
+DB 0x94
+DB 0x86
+DB 0x35
+
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV DI,4
+MOV CL,04
+back:
+MOV AL,BYTE[SI]
+MOV BYTE[DI],AL
+INC SI
+INC DI
+LOOP back
+
+HLT
+-----------------------------------------------------------
+REVERSE ORDER
+vals:
+DB 0x06
+DB 0x94
+DB 0x86
+DB 0x35
+
+
+
+; actual entry point of the program
+start:
+MOV SI,3
+MOV DI,4
+MOV CL,04
+back:
+MOV AL,BYTE[SI]
+MOV BYTE[DI],AL
+DEC SI
+INC DI
+LOOP back
+
+HLT
+-------------------------------------------------------
+EXCHANGE BLOCK DATA
+vals:
+DB 0x06
+DB 0x94
+DB 0x86
+DB 0x35
+DB 0x03
+DB 0x04
+DB 0x01
+DB 0x30
+
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV DI,4
+MOV CL,04
+back:
+MOV BL,BYTE[SI]
+MOV AL,BYTE[DI]
+MOV BYTE[DI],BL
+MOV BYTE[SI],AL
+INC SI
+INC DI
+LOOP back
+
+HLT
+------------------------------------SORTING-----------
+
+vals:
+DB 0x0A
+DB 0x94
+DB 0x86
+DB 0x35
+DB 0x03
+DB 0x04
+DB 0x01
+DB 0x30
+DB 0x01
+DB 0x30
+DB 0x31
+
+; actual entry point of the program
+start:
+MOV SI,0
+MOV CL,BYTE[SI]
+DEC CL
+back1:
+MOV SI,0
+MOV CH,BYTE[SI]
+DEC CH
+INC SI
+back:
+MOV AL,BYTE[SI]
+INC SI
+CMP AL,BYTE[SI]
+JC skip
+XCHG AL,BYTE[SI]
+DEC SI
+XCHG AL,BYTE[SI]
+INC SI
+skip:
+DEC CH
+JNZ back
+DEC CL
+JNZ back1
+HLT
+---------------------------------LENGHTH OF STRING------------
+vals:
+DB 0x12
+DB 0x34
+DB 0x56
+DB 0x78
+DB 0xFF
+
+
+
+start:
+MOV DI,0
+MOV CX,0001
+MOV AL,0xFF
+back:
+SCAS byte
+JNZ skip
+MOV BX,6
+MOV WORD[BX],CX
+JMP skip2
+skip:
+INC CX
+JMP back
+skip2:
+HLT
+
+
+--------------------STRING RELOCATION-----------
+vals:
+DB 0x12
+DB 0x34
+DB 0x56
+DB 0x78
+DB 0xFF
+
+
+
+start:
+MOV SI,0
+MOV DI,5
+MOV CL,04
+REP
+MOVS byte
+HLT
+----------------------STRING REVERSAL--------------------
+vals:
+DB 0x12
+DB 0x34
+DB 0x56
+DB 0x78
+DB 0x79
+
+
+
+start:
+MOV SI,0
+MOV DI,5
+MOV CL,05
+ADD SI,CX
+SUB SI,01
+back:
+STD
+LODS byte
+CLD
+STOS byte
+LOOP back
+HLT
+------------------------------------SCANNING A BYTE OF STRING--------------
+
+vals:
+DB 0x12
+DB 0x34
+DB 0x56
+DB 0x78
+DB 0x79
+DB 0x99;DATA TO BE FOUND IF PRESENT THEN 0 ELSE FF
+
+
+start:
+MOV DI,0
+MOV BX,6
+MOV CX,05
+MOV SI,5
+MOV AL,BYTE[SI]
+CLD
+back:
+SCAS byte
+JNZ skip
+MOV DL,00
+MOV WORD[BX],DX
+JMP skip2
+skip:
+LOOP back
+MOV DL,0xFF
+MOV WORD[BX],DX
+skip2:
+HLT
+
+
+
+
