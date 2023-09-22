@@ -1,1 +1,1 @@
-# ALL 8086 microprocessor codes 
+# 8086 microprocessor basic codes 
