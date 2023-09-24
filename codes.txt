@@ -2,7 +2,7 @@
 ------MULTIBYTE ADDITION---------
 
 vals:
-DB 0x01111 
+DB 0x01
 DB 0x02
 DB 0x03
 DB 0x04
